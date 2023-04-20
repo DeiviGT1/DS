@@ -174,7 +174,7 @@ class WebScrapping:
     self.dict_.update({"Plantel": self.td})
     return self.dict_
 
-  def planetel_historico(self):
+  def plantel_historico(self):
     years = ["2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"]
     for year in years:
       url = f"https://www.espn.com.co/futbol/equipo/plantel/_/id/2690/liga/COL.1/temporada/{year}"
@@ -274,7 +274,7 @@ class WebScrapping:
 
   def resultados(self):
     url = f"https://www.espn.com.co/futbol/equipo/resultados/_/id/2690/temporada/2023"
-    time.sleep(1)
+    time.sleep(3)
     self.driver.get(url)
     tbody = self.driver.find_elements(By.TAG_NAME, "tbody")
 
@@ -294,7 +294,7 @@ class WebScrapping:
         #Caso partido de vuelta con resultado diferente a 0 - 0 en la ida
         if re.findall(r"\bglobal\b", resultado_partido):
           resultados = re.search(r"(\d+\s*-\s*\d+).*?(\d+\s*-\s*\d+)", resultado_partido, re.DOTALL)
-          resultado_global = resultados.group(2)
+          resultado_global = " ".join(resultados.group(2))
           resultado_vuelta = resultados.group(1)
           resultado_ida = f"{int(resultado_global[0])-int(resultado_vuelta[0])} - {int(resultado_global[-1])-int(resultado_vuelta[-1])}"
           if re.findall(r"\bEmpate\b", resultado_partido):
@@ -308,7 +308,7 @@ class WebScrapping:
         elif re.findall(r"\bIda\b", resultado_partido):
           resultado_global = ""
           resultado_vuelta = ""
-          resultado_ida = re.findall(r"\b(\d+\s*-\s*\d+)\b", resultado_partido.replace("\n"," "))
+          resultado_ida = str(re.findall(r"\b(\d+\s*-\s*\d+)\b", resultado_partido.replace("\n"," ")))[2:-2]
           if tipo == "local" and resultado_ida[0] > resultado_ida[-1]:
             ganador = "Independiente Medellín"
           elif tipo == "visitante" and resultado_ida[0] < resultado_ida[-1]:
@@ -376,7 +376,7 @@ class WebScrapping:
           #Caso partido de vuelta con resultado diferente a 0 - 0 en la ida
           if re.findall(r"\bglobal\b", resultado_partido):
             resultados = re.search(r"(\d+\s*-\s*\d+).*?(\d+\s*-\s*\d+)", resultado_partido, re.DOTALL)
-            resultado_global = resultados.group(2)
+            resultado_global = " ".join(resultados.group(2))
             resultado_vuelta = resultados.group(1)
             resultado_ida = f"{int(resultado_global[0])-int(resultado_vuelta[0])} - {int(resultado_global[-1])-int(resultado_vuelta[-1])}"
             if re.findall(r"\bEmpate\b", resultado_partido):
@@ -390,7 +390,7 @@ class WebScrapping:
           elif re.findall(r"\bIda\b", resultado_partido):
             resultado_global = ""
             resultado_vuelta = ""
-            resultado_ida = re.findall(r"\b(\d+\s*-\s*\d+)\b", resultado_partido.replace("\n"," "))
+            resultado_ida = str(re.findall(r"\b(\d+\s*-\s*\d+)\b", resultado_partido.replace("\n"," ")))[2:-2]
             if tipo == "local" and resultado_ida[0] > resultado_ida[-1]:
               ganador = "Independiente Medellín"
             elif tipo == "visitante" and resultado_ida[0] < resultado_ida[-1]:
@@ -428,8 +428,8 @@ class WebScrapping:
             else: 
               ganador = rival
             penaltis = False
-          
-          self.td.append({"fecha": fecha, "rival": rival, "tipo":tipo, "resultado_global": resultado_global, "resultado_ida": resultado_ida, "resultado_vuelta": resultado_vuelta, "ganador": ganador, "penaltis": penaltis})
+        
+          self.td.append({"fecha": fecha, "rival": rival, "tipo":tipo, "resultado_global": resultado_global, "resultado_ida": resultado_ida, "resultado_vuelta": resultado_vuelta, "ganador": ganador, "penaltis": penaltis, "año": year})
     self.dict_.update({"Resultados": self.td})
     return self.dict_
   
