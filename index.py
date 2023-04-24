@@ -10,27 +10,23 @@ app = Flask(__name__, template_folder='./templates')
 def index(methods=['GET']):
   data = json.loads(open('./info/json_resultados_historicos.json').read())["Resultados"]
   partidos_ganados ={}
-  for d in data:
-    rival = d['rival']
-    ganador = d['ganador']
-    torneo = d['torneo']
-    if ganador == rival:
-        continue
-    key = (rival, ganador, torneo)
-    partidos_ganados[key] = partidos_ganados.get(key, 0) + 1
-
-  return str(partidos_ganados)
+  dict_=[]
+  # return json.loads(open('./info/json_resultados_historicos.json').read())
+  for i in data:
+    ganador = i["ganador"]
+    rival = i["rival"]
+    if(ganador, rival) not in partidos_ganados:
+      partidos_ganados[(ganador, rival)] = 1
+    else:
+      partidos_ganados[(ganador, rival)] += 1
   partidos_ganados = sorted(partidos_ganados.items(), key=operator.itemgetter(1), reverse=True)
-  resultados = []
+  for i in partidos_ganados:
+    dict_.append({"ganador": i[0][0], "rival": i[0][1], "partidos_ganados": i[1]})
+
+  return {"partidos_ganados"  : dict_}
   
-  for ((rival, ganador, torneo), num_partidos) in partidos_ganados:
-      resultado = {
-          'rival': rival,
-          'ganador': ganador,
-          'torneo': torneo,
-          'partidos_ganados': num_partidos
-      }
-      resultados.append(resultado)
+  
+
 
 
   return {"resultados": resultados}
