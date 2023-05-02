@@ -4,7 +4,7 @@ import pandas as pd
 import json
 import operator
 
-app = Flask(__name__, template_folder='./templates')
+app = Flask(__name__, template_folder='./templates', static_folder='./static')
 
 @app.route('/')
 def index(methods=['GET']):
@@ -23,13 +23,9 @@ def index(methods=['GET']):
   for i in partidos_ganados:
     dict_.append({"ganador": i[0][0], "rival": i[0][1], "partidos_ganados": i[1]})
 
-  return {"partidos_ganados"  : dict_}
+  resultados = {"resultados"  : dict_}
+  return render_template('index.html', resultados=resultados)
   
-  
-
-
-
-  return {"resultados": resultados}
 
 if __name__ == '__main__':
   app.run(debug=True)

@@ -5,13 +5,41 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
   <title>Document</title>
 </head>
 <body>
   <h1>Datos</h1>
+  <div id='main'></div>
   <script>
-    var datos = {{ df|safe }};
-    Plotly.newPlot('grafico', datos);
+    var datos = '{{resultados | tojson}}'
+    datos = JSON.parse(datos)["resultados"]
+    let collection = document.getElementById('main')
+    
+    
+    for (let i = 0; i < datos.length; i++) {
+      let divContainer = document.createElement('div')
+      divContainer.className = 'partido'
+
+      
+      
+      let elementVS = document.createElement('p')
+      let elementPganador = document.createElement('p')
+      let elementPrival = document.createElement('p')
+      let elementPresultado = document.createElement('p')
+      elementPganador.innerHTML = datos[i]["ganador"] + " "
+      elementPrival.innerHTML = datos[i]["rival"] + " "
+      elementPresultado.innerHTML = datos[i]["partidos_ganados"] + " "
+      
+      //divContainer.appendChild(elementPganador)
+      //divContainer.appendChild(elementVS)
+      divContainer.appendChild(elementPrival)
+      //divContainer.appendChild(elementPresultado)
+      collection.appendChild(divContainer)
+    }
+    
+
+    
     
   </script>
 </body>
