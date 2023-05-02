@@ -14,6 +14,7 @@
   <script>
     var datos = '{{resultados | tojson}}'
     datos = JSON.parse(datos)["resultados"]
+    console.log(datos)
     let collection = document.getElementById('main')
     
     
@@ -27,14 +28,18 @@
       let elementPganador = document.createElement('p')
       let elementPrival = document.createElement('p')
       let elementPresultado = document.createElement('p')
-      elementPganador.innerHTML = datos[i]["ganador"] + " "
-      elementPrival.innerHTML = datos[i]["rival"] + " "
-      elementPresultado.innerHTML = datos[i]["partidos_ganados"] + " "
+      let elementImg = document.createElement('img')
+
+      elementPganador.innerHTML = "El ganador es: " + datos[i]["ganador"]
+      elementPrival.innerHTML = "El rival es: " +datos[i]["rival"] 
+      elementPresultado.innerHTML = "La cantidad de partidos ganados son: " + datos[i]["partidos_ganados"]
+      elementImg.src = "../static/assets/equipos-de-futbol/" + datos[i]["escudo"]
       
-      //divContainer.appendChild(elementPganador)
-      //divContainer.appendChild(elementVS)
+      divContainer.appendChild(elementPganador)
+      divContainer.appendChild(elementVS)
       divContainer.appendChild(elementPrival)
-      //divContainer.appendChild(elementPresultado)
+      divContainer.appendChild(elementPresultado)
+      divContainer.appendChild(elementImg)
       collection.appendChild(divContainer)
     }
     
