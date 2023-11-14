@@ -6,6 +6,8 @@ import operator
 
 app = Flask(__name__, template_folder='./templates', static_folder='./static')
 
+WebScrapping()
+
 lista_equipos = {
   '9 de Octubre':'9-de-octubre.png',
   'Rionegro Águilas':'aguilas-doradas.png',
