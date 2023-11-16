@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css?v=1')}}">
   <title>Document</title>
 </head>
 <body>
@@ -30,9 +30,9 @@
       let elementPresultado = document.createElement('p')
       let elementImg = document.createElement('img')
 
-      elementPganador.innerHTML = "El ganador es: " + datos[i]["ganador"]
-      elementPrival.innerHTML = "El rival es: " +datos[i]["rival"] 
-      elementPresultado.innerHTML = "La cantidad de partidos ganados son: " + datos[i]["partidos_ganados"]
+      elementPganador.innerHTML = "El ganador es: " + datos[i]["ganador"] + "\n"
+      elementPrival.innerHTML = "El rival es: " +datos[i]["rival"] + "\n"
+      elementPresultado.innerHTML = "La cantidad de partidos ganados son: " + datos[i]["partidos_ganados"] 
       elementImg.src = "../static/assets/equipos-de-futbol/" + datos[i]["escudo"]
       
       divContainer.appendChild(elementPganador)
@@ -40,6 +40,11 @@
       divContainer.appendChild(elementPrival)
       divContainer.appendChild(elementPresultado)
       divContainer.appendChild(elementImg)
+
+      
+      elementImg.style.height = "20px"
+      elementImg.style.width = "20px"
+
       collection.appendChild(divContainer)
     }
     

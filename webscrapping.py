@@ -16,14 +16,14 @@ class WebScrapping:
     self.driver = webdriver.Chrome(ChromeDriverManager().install())
     
     # save_file(self.ranking_g_a())
-    save_file(self.ranking_g_a_historico())
+    # save_file(self.ranking_g_a_historico())
     # save_file(self.ranking_tarjetas())
     # save_file(self.ranking_tarjetas_historico())
     # save_file(self.plantel())
     # save_file(self.plantel_historico())
     # save_file(self.calendario())
     # save_file(self.resultados())
-    # save_file(self.resultados_historicos())
+    save_file(self.resultados_historicos())
     self.driver.quit()
 
 
@@ -73,7 +73,7 @@ class WebScrapping:
         dict_temp.update({listas[i]: self.td})
         i+=1
 
-    self.dict_.update({"json_resultados_historicos": dict_temp})
+    self.dict_.update({"json_ranking_g_a_historico": dict_temp})
     return self.dict_
   
   def ranking_tarjetas(self):
@@ -96,7 +96,7 @@ class WebScrapping:
         "tarjetas_amarillas": tarjetas_amarillas.text, 
         "tarjetas_rojas": tarjetas_rojas.text}]
         self.td.append(temp_dict)
-      dict_.update({"Tarjetas": self.td})
+      dict_.update({"json_tarjetas": self.td})
     return self.dict_
   
   def ranking_tarjetas_historico(self):
@@ -122,7 +122,7 @@ class WebScrapping:
           "tarjetas_rojas": tarjetas_rojas.text, 
           "year": year}]
           self.td.append(temp_dict)
-    self.dict_.update({"Tarjetas": self.td})
+    self.dict_.update({"json_tarjetas_historico": self.td})
     return self.dict_
 
   def plantel(self):
@@ -196,7 +196,7 @@ class WebScrapping:
           "tarjetas_amarillas": tarjetas_amarillas,
           "tarjetas_rojas": tarjetas_rojas})
       
-    self.dict_.update({"Plantel": self.td})
+    self.dict_.update({"json_plantel": self.td})
     return self.dict_
 
   def plantel_historico(self):
@@ -273,7 +273,7 @@ class WebScrapping:
             "tarjetas_amarillas": tarjetas_amarillas,
             "tarjetas_rojas": tarjetas_rojas,
             "year": year})
-    self.dict_.update({"Plantel": self.td})
+    self.dict_.update({"json_plantel_historico": self.td})
     return self.dict_
 
   def calendario(self):
@@ -298,7 +298,7 @@ class WebScrapping:
         resultado = partido.find_elements(By.XPATH, "./td")[2].text
         self.td.append({"fecha": fecha, "rival": rival, "tipo":tipo, "resultado": resultado})
 
-    self.dict_.update({"Calendario": self.td})
+    self.dict_.update({"json_calendario": self.td})
     return self.dict_
 
   def resultados(self):
@@ -379,11 +379,13 @@ class WebScrapping:
           penaltis = False
         
         self.td.append({"fecha": fecha, "rival": rival, "tipo":tipo, "resultado_global": resultado_global, "resultado_ida": resultado_ida, "resultado_vuelta": resultado_vuelta, "ganador": ganador, "penaltis": penaltis})
-    self.dict_.update({"Resultados": self.td})
+    self.dict_.update({"json_resultados": self.td})
     return self.dict_
 
   def resultados_historicos(self):
     years = ["2016", "2017", "2018", "2019", "2020", "2021", "2022"]
+    self.dict_= {}
+    self.td = []
 
     for year in years:
       url = f"https://www.espn.com.co/futbol/equipo/resultados/_/id/2690/temporada/{year}"
@@ -461,6 +463,6 @@ class WebScrapping:
             penaltis = False
         
           self.td.append({"fecha": fecha, "rival": rival, "tipo":tipo, "resultado_global": resultado_global, "resultado_ida": resultado_ida, "resultado_vuelta": resultado_vuelta, "ganador": ganador, "penaltis": penaltis, "año": year})
-    self.dict_.update({"Resultados": self.td})
+    self.dict_.update({"json_resultados_historicos": self.td})
     return self.dict_
   

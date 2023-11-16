@@ -6,7 +6,6 @@ import operator
 
 app = Flask(__name__, template_folder='./templates', static_folder='./static')
 
-WebScrapping()
 
 lista_equipos = {
   '9 de Octubre':'9-de-octubre.png',
@@ -60,21 +59,22 @@ lista_equipos = {
 }
 
 @app.route('/')
-def index(methods=['GET']):
-  data = json.loads(open('./info/json_resultados_historicos.json').read())["Resultados"]
+def index(method=['GET']):
+  
+  data = json.loads(open('./info/json_resultados_historicos.json').read())["json_resultados_historicos"]
   partidos_ganados ={}
   dict_=[]
-  # return json.loads(open('./info/json_resultados_historicos.json').read())
   for i in data:
     ganador = i["ganador"]
     rival = i["rival"]
     escudo = lista_equipos[rival]
-    if(ganador, rival) not in partidos_ganados:
+    if (ganador, rival, escudo) not in partidos_ganados:
       partidos_ganados[(ganador, rival, escudo)] = 1
     else:
       partidos_ganados[(ganador, rival, escudo)] += 1
   partidos_ganados = sorted(partidos_ganados.items(), key=operator.itemgetter(1), reverse=True)
   for i in partidos_ganados:
+    
     dict_.append({"ganador": i[0][0], "rival": i[0][1], "partidos_ganados": i[1], "escudo": i[0][2]})
 
   resultados = {"resultados"  : dict_}
@@ -82,4 +82,7 @@ def index(methods=['GET']):
   
 
 if __name__ == '__main__':
-  app.run(host='localhost', port=5000, debug=True)
+  try:
+    app.run(host='localhost', port=5000, debug=True)
+  except Exception as e:
+    print(f"Error: {e}")
