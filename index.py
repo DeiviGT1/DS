@@ -90,8 +90,9 @@ def index(method=['GET']):
       partidos[rival]["resultados"]["partidos_ganados"] += resultados_inicial(ganador)["partidos_ganados"]
       partidos[rival]["resultados"]["partidos_perdidos"] += resultados_inicial(ganador)["partidos_perdidos"]
       partidos[rival]["resultados"]["partidos_empatados"] += resultados_inicial(ganador)["partidos_empatados"]
-
-  resultados = {"resultados"  : dict_}
+      partidos[rival]["partidos_totales"] += sum(resultados_inicial(ganador).values())
+  
+  resultados = {"resultados"  : partidos}
   return render_template('index.html', resultados=resultados)
   
 
