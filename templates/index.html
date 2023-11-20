@@ -14,33 +14,29 @@
   <script>
     var datos = '{{resultados | tojson}}'
     datos = JSON.parse(datos)["resultados"]
-    console.log(datos)
+    
     let collection = document.getElementById('main')
+    console.log(Object.keys(datos).length)
     
-    
-    for (let i = 0; i < datos.length; i++) {
+    for (var equipo in datos) {
+      
       let divContainer = document.createElement('div')
       divContainer.className = 'partido'
 
       
       
-      let elementVS = document.createElement('p')
-      let elementPganador = document.createElement('p')
-      let elementPrival = document.createElement('p')
+      
       let elementPresultado = document.createElement('p')
       let elementImg = document.createElement('img')
 
-      elementPresultado.innerHTML = "La cantidad de partidos ganados son: " + datos[i]["resultados"]["partidos_ganados"] + "\n"
-      elementPganador.innerHTML = "La cantidad de partidos empatados es: " + datos[i["resultados"]["partidos_empatados"] + "\n"
-      elementPrival.innerHTML = "La cantidad de partidos perdidos es: " +datos[i]["resultados"]["partidos_perdidos"]
+      elementPresultado.innerHTML = "La cantidad de partidos ganados son: " + datos[equipo]["resultados"]["partidos_ganados"] + "\n"
       
-      elementImg.src = "../static/assets/equipos-de-futbol/" + datos[i]["escudo"]
       
-      divContainer.appendChild(elementPganador)
-      divContainer.appendChild(elementVS)
-      divContainer.appendChild(elementPrival)
+      elementImg.src = "../static/assets/equipos-de-futbol/" + datos[equipo]["escudo"]
+      
+      
       divContainer.appendChild(elementPresultado)
-      divContainer.appendChild(elementImg)
+      
 
       
       elementImg.style.height = "20px"
