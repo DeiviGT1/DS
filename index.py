@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from webscrapping import WebScrapping
 import pandas as pd
+import jsonpickle
 import json
 import operator
 
 app = Flask(__name__, template_folder='./templates', static_folder='./static')
-
 
 lista_equipos = {
   '9 de Octubre':'9-de-octubre.png',
@@ -58,6 +58,20 @@ lista_equipos = {
   'Valledupar FC':'valledupar.png'
 }
 
+def resultados_inicial(ganador):
+    if ganador == "Independiente Medellín":
+        return {"partidos_ganados": 0,
+                "partidos_perdidos": 1,
+                "partidos_empatados": 0}
+    elif ganador == "Empate":
+        return {"partidos_ganados": 0,
+                "partidos_perdidos": 0,
+                "partidos_empatados": 1}
+    else:
+        return {"partidos_ganados": 1,
+                "partidos_perdidos": 0,
+                "partidos_empatados": 0}
+
 @app.route('/')
 def index(method=['GET']):
   
@@ -69,19 +83,13 @@ def index(method=['GET']):
     rival = i["rival"]
     escudo = lista_equipos[rival]
     if rival not in partidos:
-      if ganador == "Empate":
-        partidos[rival] = 0
-        p
-      
-
-    if (ganador, rival, escudo) not in partidos_ganados:
-      partidos_ganados[(ganador, rival, escudo)] = 1
+      partidos[rival] = {"escudo":escudo,
+                         "resultados" : resultados_inicial(ganador),
+                         "partidos_totales": sum(resultados_inicial(ganador).values())}
     else:
-      partidos_ganados[(ganador, rival, escudo)] += 1
-  partidos = sorted(partidos.items(), key=operator.itemgetter(1), reverse=True)
-  for i in partidos:
-
-    dict_.append({"ganador": i[0][0], "rival": i[0][1], "partidos": i[1], "escudo": i[0][2]})
+      partidos[rival]["resultados"]["partidos_ganados"] += resultados_inicial(ganador)["partidos_ganados"]
+      partidos[rival]["resultados"]["partidos_perdidos"] += resultados_inicial(ganador)["partidos_perdidos"]
+      partidos[rival]["resultados"]["partidos_empatados"] += resultados_inicial(ganador)["partidos_empatados"]
 
   resultados = {"resultados"  : dict_}
   return render_template('index.html', resultados=resultados)
