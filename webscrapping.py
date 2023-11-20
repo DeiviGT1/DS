@@ -1,6 +1,7 @@
 import pandas as pd
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
+from unidecode import unidecode
 from selenium.webdriver.common.by import By
 import json
 import time
@@ -461,8 +462,9 @@ class WebScrapping:
             else: 
               ganador = rival
             penaltis = False
-        
-          self.td.append({"fecha": fecha, "rival": rival, "tipo":tipo, "resultado_global": resultado_global, "resultado_ida": resultado_ida, "resultado_vuelta": resultado_vuelta, "ganador": ganador, "penaltis": penaltis, "año": year})
+          id = unidecode(rival.lower()).replace(" ","-")
+
+          self.td.append({"fecha": fecha, "rival": rival, "tipo":tipo, "resultado_global": resultado_global, "resultado_ida": resultado_ida, "resultado_vuelta": resultado_vuelta, "ganador": ganador, "penaltis": penaltis, "año": year, "id": id})
     self.dict_.update({"json_resultados_historicos": self.td})
     return self.dict_
   

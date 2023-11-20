@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css')}}?v={{ version }}">
   <title>Document</title>
 </head>
 <body>
   <h1>Datos</h1>
+  <main>
   <div id='main'></div>
   <script>
     var datos = '{{resultados | tojson}}'
@@ -18,9 +18,7 @@
       Object.entries(datos).sort((a, b) => b[1].partidos_totales - a[1].partidos_totales || b[1].resultados.partidos_ganados - a[1].resultados.partidos_ganados || b[1].resultados.partidos_empatados - a[1].resultados.partidos_empatados)
     );
 
-    
     let collection = document.getElementById('main')
-    console.log(Object.keys(datos).length)
     
     for (var equipo in datos) {
       
@@ -65,5 +63,6 @@
     
     
   </script>
+  </main>
 </body>
 </html>

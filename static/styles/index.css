@@ -10,6 +10,7 @@ h1{
 
 .partido{
   display: flex;
+  background-color: #ccc;
   justify-content: space-between;
   border-bottom: 1px dashed #ccc;
   margin-bottom: 10px;
